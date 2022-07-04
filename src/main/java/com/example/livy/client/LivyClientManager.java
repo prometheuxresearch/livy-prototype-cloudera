@@ -36,19 +36,25 @@ public class LivyClientManager {
 			config.put("spark.sql.crossJoin.enabled", "true");
 //			config.put("client.auth.id", clouderaClientId);
 //			config.put("client.auth.secret", clouderaClientSecret);
+			
+			String javaSecurityAuthLoginConfig = LivyConfigurationManager.getInstance().getProperty("java.security.auth.login.config");
+			System.setProperty("java.security.auth.login.config", javaSecurityAuthLoginConfig);
+			
+			String javaSecurityKrb5Conf = LivyConfigurationManager.getInstance().getProperty("java.security.krb5.conf");
+			System.setProperty("java.security.krb5.conf", javaSecurityKrb5Conf);
+			
+			String sunSecurityKrb5Debug = LivyConfigurationManager.getInstance().getProperty("sun.security.krb5.debug");
+			System.setProperty("sun.security.krb5.debug", sunSecurityKrb5Debug);
+			
+			String javaSecurityAuthUseSubjectCredsOnly = LivyConfigurationManager.getInstance().getProperty("javax.security.auth.useSubjectCredsOnly");
+			System.setProperty("javax.security.auth.useSubjectCredsOnly", javaSecurityAuthUseSubjectCredsOnly);
 
-			/* Add these properties here and in livy.properties
-			System.setProperty("java.security.auth.login.config", ...);
-			System.setProperty("java.security.krb5.conf", ...);
-			System.setProperty("sun.security.krb5.debug", ...);
-			System.setProperty("javax.security.auth.useSubjectCredsOnly", ...);
-			*/
 //			config.put("spark.jars", "/home/davben/.livy-sessions/*");
 			String uri = LivyConfigurationManager.getInstance().getProperty("livy.uri");
 			livyClient = new LivyClientBuilder(false).setAll(config).setURI(new URI(uri)).build();
 			System.out.println("Uploading jars to the SparkContext...");
-			File jar = new File("myJarLight.jar");
-			livyClient.uploadJar(jar).get();
+			File jarFile = new File("myJarLight.jar");
+			livyClient.uploadJar(jarFile).get();
 			System.out.println("finish uploading jars to the SparkContext...");
 		}
 		return livyClient;
