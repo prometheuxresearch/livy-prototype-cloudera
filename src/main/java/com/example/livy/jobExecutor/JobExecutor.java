@@ -1,7 +1,6 @@
 package com.example.livy.jobExecutor;
 
-import org.apache.livy.LivyClient;
-
+import com.cloudera.livy.LivyClient;
 import com.example.livy.client.LivyClientManager;
 import com.example.livy.job.MyJob;
 

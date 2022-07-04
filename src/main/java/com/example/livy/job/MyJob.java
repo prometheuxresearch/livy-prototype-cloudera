@@ -3,8 +3,6 @@ package com.example.livy.job;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.livy.Job;
-import org.apache.livy.JobContext;
 import org.apache.spark.sql.Column;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
@@ -15,6 +13,9 @@ import org.apache.spark.sql.catalyst.encoders.ExpressionEncoder;
 import org.apache.spark.sql.catalyst.encoders.RowEncoder;
 import org.apache.spark.sql.types.DataTypes;
 import org.apache.spark.sql.types.StructType;
+
+import com.cloudera.livy.Job;
+import com.cloudera.livy.JobContext;
 
 public class MyJob implements Job<Boolean>{
 	String program = "";
@@ -33,7 +34,7 @@ public class MyJob implements Job<Boolean>{
 
 	@Override
 	public Boolean call(JobContext jc) throws Exception {
-		SparkSession spark = jc.sparkSession();
+		SparkSession spark = jc.sqlctx().sparkSession();
 		String[] headAndBody = this.program.split(",");
 		if(headAndBody.length == 2) {
 			this.doJoin(spark);
